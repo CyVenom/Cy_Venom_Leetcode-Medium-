@@ -19,7 +19,7 @@ Feel free to explore, learn, and contribute! 💡
 
 1. Clone the repository:
    ```bash
-   https://github.com/CyVenom/Cy_Venom_Leetcode-Medium-.git
+   https://github.com/CyVenom/Cy_Venom_Leetcode-Medium.git
    cd Cy_Venom_Leetcode-HARD
    ```
 2. Browse through the problems and check solutions.
