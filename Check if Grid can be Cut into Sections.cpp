@@ -11,46 +11,24 @@
 class Solution {
 public:
     bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
-        return checkCuts(rectangles, true) || checkCuts(rectangles, false);
+        return canCut(rectangles, 0) || canCut(rectangles, 1);
     }
 
 private:
-    bool checkCuts(vector<vector<int>>& rectangles, bool vertical) {
-        set<int> cutPositions;
-        unordered_map<int, int> leftCount, rightCount;
-        
-        
-        for (const auto& rect : rectangles) {
-            int start = vertical ? rect[0] : rect[1];
-            int end = vertical ? rect[2] : rect[3];
-            cutPositions.insert(start);
-            cutPositions.insert(end);
-            leftCount[start]++;
-            rightCount[end]++;
+    bool canCut(vector<vector<int>>& rectangles, int axis) {
+        sort(rectangles.begin(), rectangles.end(),
+             [axis](vector<int>& a, vector<int>& b) { return a[axis] < b[axis]; });
+
+        int cuts = 0, previousEnd = -1;
+
+        for (auto& rect : rectangles) {
+            int start = rect[axis], end = rect[axis + 2];
+
+            if (start >= previousEnd) cuts++;
+            previousEnd = max(previousEnd, end);
+            if (cuts >= 3) return true;
         }
 
-        vector<int> cuts(cutPositions.begin(), cutPositions.end());
-        int totalRectangles = rectangles.size();
-        int leftSum = 0, rightSum = totalRectangles;
-
-        
-        for (int i = 0; i < cuts.size(); i++) {
-            leftSum += leftCount[cuts[i]];
-            rightSum -= rightCount[cuts[i]];
-
-            for (int j = i + 1; j < cuts.size(); j++) {
-                int middleSum = totalRectangles - leftSum - rightSum;
-                if (leftSum > 0 && middleSum > 0 && rightSum > 0) {
-                    return true;
-                }
-                leftSum += leftCount[cuts[j]];
-                rightSum -= rightCount[cuts[j]];
-            }
-
-            leftSum = 0;
-            rightSum = totalRectangles;
-        }
-        
         return false;
     }
 };
