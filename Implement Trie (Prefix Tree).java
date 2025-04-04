@@ -1,16 +1,42 @@
-class Solution {
-    public int minSubArrayLen(int target, int[] nums) {
-        int left = 0, sum = 0, minLength = Integer.MAX_VALUE;
-        
-        for (int right = 0; right < nums.length; right++) {
-            sum += nums[right];
-            
-            while (sum >= target) {
-                minLength = Math.min(minLength, right - left + 1);
-                sum -= nums[left++];
-            }
+class Trie {
+
+    private class TrieNode {
+        TrieNode[] children = new TrieNode[26];
+        boolean isWord = false;
+    }
+
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) node.children[idx] = new TrieNode();
+            node = node.children[idx];
         }
-        
-        return minLength == Integer.MAX_VALUE ? 0 : minLength;
+        node.isWord = true;
+    }
+
+    public boolean search(String word) {
+        TrieNode node = findNode(word);
+        return node != null && node.isWord;
+    }
+
+    public boolean startsWith(String prefix) {
+        return findNode(prefix) != null;
+    }
+
+    private TrieNode findNode(String str) {
+        TrieNode node = root;
+        for (char c : str.toCharArray()) {
+            int idx = c - 'a';
+            if (node.children[idx] == null) return null;
+            node = node.children[idx];
+        }
+        return node;
     }
 }
