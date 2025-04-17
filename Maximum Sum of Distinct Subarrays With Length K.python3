@@ -1,0 +1,28 @@
+class Solution:
+    def maximumSubarraySum(self, nums: list[int], k: int) -> int:
+        n = len(nums)
+        if n < k:
+            return 0
+
+        from collections import defaultdict
+
+        count = defaultdict(int)
+        window_sum = 0
+        max_sum = 0
+        left = 0
+
+        for right in range(n):
+            count[nums[right]] += 1
+            window_sum += nums[right]
+
+            if right - left + 1 > k:
+                count[nums[left]] -= 1
+                if count[nums[left]] == 0:
+                    del count[nums[left]]
+                window_sum -= nums[left]
+                left += 1
+
+            if right - left + 1 == k and len(count) == k:
+                max_sum = max(max_sum, window_sum)
+
+        return max_sum
