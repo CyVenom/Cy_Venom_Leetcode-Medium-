@@ -1,0 +1,26 @@
+class Solution:
+    def construct(self, grid: List[List[int]]) -> 'Node':
+        def is_uniform(x0, y0, length):
+            val = grid[x0][y0]
+            for i in range(x0, x0 + length):
+                for j in range(y0, y0 + length):
+                    if grid[i][j] != val:
+                        return False, None
+            return True, val
+
+        def build(x0, y0, length):
+            uniform, val = is_uniform(x0, y0, length)
+            if uniform:
+                return Node(bool(val), True, None, None, None, None)
+
+            half = length // 2
+            return Node(
+                True, False,
+                build(x0, y0, half),
+                build(x0, y0 + half, half),
+                build(x0 + half, y0, half),
+                build(x0 + half, y0 + half, half)
+            )
+
+        n = len(grid)
+        return build(0, 0, n)
