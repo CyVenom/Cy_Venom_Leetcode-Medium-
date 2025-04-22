@@ -1,0 +1,17 @@
+class Solution:
+    def findRadius(self, houses: List[int], heaters: List[int]) -> int:
+        heaters.sort()
+        
+        def find_closest(house):
+            left, right = 0, len(heaters) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                if heaters[mid] < house:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            dist1 = abs(house - heaters[right]) if right >= 0 else float('inf')
+            dist2 = abs(house - heaters[left]) if left < len(heaters) else float('inf')
+            return min(dist1, dist2)
+
+        return max(find_closest(house) for house in houses)
