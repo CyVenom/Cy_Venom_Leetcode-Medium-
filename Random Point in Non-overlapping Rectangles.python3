@@ -1,0 +1,22 @@
+class Solution:
+
+    def __init__(self, rects: List[List[int]]):
+        self.rects = rects
+        self.areas = []
+        total = 0
+        for a, b, x, y in rects:
+            area = (x - a + 1) * (y - b + 1)
+            total += area
+            self.areas.append(total)  # prefix sum for binary search
+
+    def pick(self) -> List[int]:
+        target = random.randint(1, self.areas[-1])
+        rect_index = bisect.bisect_left(self.areas, target)
+        a, b, x, y = self.rects[rect_index]
+        width = x - a + 1
+        height = y - b + 1
+        base = self.areas[rect_index - 1] if rect_index > 0 else 0
+        offset = target - base - 1
+        dx = offset % width
+        dy = offset // width
+        return [a + dx, b + dy]
