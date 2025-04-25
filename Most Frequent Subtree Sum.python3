@@ -1,0 +1,21 @@
+class Solution:
+    def findFrequentTreeSum(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        freq = defaultdict(int)
+        self.max_count = 0
+
+        def dfs(node):
+            if not node:
+                return 0
+            left_sum = dfs(node.left)
+            right_sum = dfs(node.right)
+            total = node.val + left_sum + right_sum
+            freq[total] += 1
+            self.max_count = max(self.max_count, freq[total])
+            return total
+
+        dfs(root)
+
+        return [s for s in freq if freq[s] == self.max_count]
