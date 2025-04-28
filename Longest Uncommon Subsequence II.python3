@@ -1,0 +1,16 @@
+class Solution:
+    def findLUSlength(self, strs: List[str]) -> int:
+        def is_subsequence(s, t):
+            i = 0
+            for c in t:
+                if i < len(s) and s[i] == c:
+                    i += 1
+            return i == len(s)
+        
+        strs.sort(key=lambda x: -len(x))
+        
+        for i, s in enumerate(strs):
+            if all(not is_subsequence(s, strs[j]) for j in range(len(strs)) if i != j):
+                return len(s)
+        
+        return -1
