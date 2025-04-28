@@ -1,0 +1,33 @@
+class Solution:
+    def updateBoard(self, board: List[List[str]], click: List[int]) -> List[List[str]]:
+        m, n = len(board), len(board[0])
+        dirs = [(-1, -1), (-1, 0), (-1, 1),
+                (0, -1),         (0, 1),
+                (1, -1), (1, 0), (1, 1)]
+        
+        def count_mines(x, y):
+            count = 0
+            for dx, dy in dirs:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < m and 0 <= ny < n and board[nx][ny] == 'M':
+                    count += 1
+            return count
+        
+        def dfs(x, y):
+            if not (0 <= x < m and 0 <= y < n) or board[x][y] != 'E':
+                return
+            mines = count_mines(x, y)
+            if mines > 0:
+                board[x][y] = str(mines)
+            else:
+                board[x][y] = 'B'
+                for dx, dy in dirs:
+                    dfs(x + dx, y + dy)
+        
+        x, y = click
+        if board[x][y] == 'M':
+            board[x][y] = 'X'
+        else:
+            dfs(x, y)
+        
+        return board
