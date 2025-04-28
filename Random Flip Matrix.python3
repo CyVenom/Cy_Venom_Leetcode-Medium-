@@ -1,0 +1,23 @@
+class Solution:
+
+    def __init__(self, m: int, n: int):
+        self.m = m
+        self.n = n
+        self.total = m * n
+        self.map = {}
+
+    def flip(self) -> list[int]:
+        rand = random.randint(0, self.total - 1)
+        self.total -= 1
+        
+        # Get the actual position mapped if any
+        pos = self.map.get(rand, rand)
+        
+        # Update the map to reflect that rand is now used
+        self.map[rand] = self.map.get(self.total, self.total)
+        
+        return [pos // self.n, pos % self.n]
+
+    def reset(self) -> None:
+        self.total = self.m * self.n
+        self.map.clear()
