@@ -1,0 +1,14 @@
+class Solution:
+    def leastBricks(self, wall: List[List[int]]) -> int:
+        edge_count = defaultdict(int)
+
+        for row in wall:
+            width = 0
+            
+            for brick in row[:-1]:
+                width += brick
+                edge_count[width] += 1
+
+        
+        max_edges = max(edge_count.values(), default=0)
+        return len(wall) - max_edges
