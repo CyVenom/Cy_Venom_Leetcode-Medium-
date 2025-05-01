@@ -1,0 +1,14 @@
+class Solution:
+    def arrayNesting(self, nums: List[int]) -> int:
+        max_len = 0
+        for i in range(len(nums)):
+            if nums[i] != -1:
+                count = 0
+                current = i
+                while nums[current] != -1:
+                    temp = nums[current]
+                    nums[current] = -1  
+                    current = temp
+                    count += 1
+                max_len = max(max_len, count)
+        return max_len
