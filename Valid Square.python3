@@ -1,0 +1,20 @@
+class Solution:
+    def validSquare(self, p1: List[int], p2: List[int], p3: List[int], p4: List[int]) -> bool:
+        def dist2(a, b):
+            return (a[0] - b[0])**2 + (a[1] - b[1])**2
+
+        points = [p1, p2, p3, p4]
+        dists = []
+
+        for i in range(4):
+            for j in range(i + 1, 4):
+                d = dist2(points[i], points[j])
+                if d == 0:
+                    return False  
+                dists.append(d)
+
+        freq = {}
+        for d in dists:
+            freq[d] = freq.get(d, 0) + 1
+
+        return len(freq) == 2 and sorted(freq.values()) == [2, 4]
