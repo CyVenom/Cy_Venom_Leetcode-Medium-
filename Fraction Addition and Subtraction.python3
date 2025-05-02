@@ -1,0 +1,43 @@
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        from math import gcd
+
+        def lcm(a, b):
+            return a * b // gcd(a, b)
+
+        def add_frac(n1, d1, n2, d2):
+            common_d = lcm(d1, d2)
+            n1 *= common_d // d1
+            n2 *= common_d // d2
+            num = n1 + n2
+            g = gcd(abs(num), common_d)
+            return num // g, common_d // g
+
+        # Add '+' to beginning if not present
+        if expression[0] != '-':
+            expression = '+' + expression
+
+        i = 0
+        n = len(expression)
+        res_num, res_den = 0, 1
+
+        while i < n:
+            sign = 1
+            if expression[i] == '+':
+                sign = 1
+                i += 1
+            elif expression[i] == '-':
+                sign = -1
+                i += 1
+
+            j = i
+            while j < n and expression[j] not in '+-':
+                j += 1
+
+            frac = expression[i:j]
+            num, den = map(int, frac.split('/'))
+            num *= sign
+            res_num, res_den = add_frac(res_num, res_den, num, den)
+            i = j
+
+        return f"{res_num}/{res_den}"
