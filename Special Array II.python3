@@ -1,0 +1,22 @@
+class Solution:
+    def isArraySpecial(self, nums: List[int], queries: List[List[int]]) -> List[bool]:
+        n = len(nums)
+        
+        bad = [0] * (n - 1)
+        for i in range(n - 1):
+            if nums[i] % 2 == nums[i + 1] % 2:
+                bad[i] = 1
+
+       
+        prefix = [0] * (n)
+        for i in range(n - 1):
+            prefix[i + 1] = prefix[i] + bad[i]
+
+        
+        res = []
+        for l, r in queries:
+            
+            is_special = prefix[r] - prefix[l] == 0
+            res.append(is_special)
+
+        return res
