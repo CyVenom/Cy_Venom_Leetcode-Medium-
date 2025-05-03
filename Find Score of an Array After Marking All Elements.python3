@@ -1,0 +1,21 @@
+class Solution:
+    def findScore(self, nums: List[int]) -> int:
+        n = len(nums)
+        heap = [(val, idx) for idx, val in enumerate(nums)]
+        heapq.heapify(heap)
+
+        marked = set()
+        score = 0
+
+        while heap:
+            val, idx = heapq.heappop(heap)
+            if idx in marked:
+                continue
+            score += val
+            marked.add(idx)
+            if idx - 1 >= 0:
+                marked.add(idx - 1)
+            if idx + 1 < n:
+                marked.add(idx + 1)
+
+        return score
