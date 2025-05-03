@@ -1,0 +1,25 @@
+class Solution:
+    def maxTwoEvents(self, events: List[List[int]]) -> int:
+        
+        events.sort(key=lambda x: x[1])
+        
+        
+        end_times = []
+        max_values = []
+        max_val = 0
+        res = 0
+
+        for start, end, value in events:
+           
+            idx = bisect_right(end_times, start - 1) - 1
+            if idx >= 0:
+                res = max(res, value + max_values[idx])
+            else:
+                res = max(res, value)
+
+            
+            end_times.append(end)
+            max_val = max(max_val, value)
+            max_values.append(max_val)
+
+        return res
