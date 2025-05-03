@@ -1,0 +1,26 @@
+class Solution:
+    def maximumLength(self, s: str) -> int:
+        three_longest = defaultdict(lambda: [-1, -1, -1])
+        longest_so_far = -1
+        
+        i = 0
+        prev = s[0]
+        curr_length = 0
+    
+        while i < len(s):
+            c = s[i]
+            if c != prev:
+                curr_length = 0
+
+            curr_length += 1
+
+            if three_longest[c][0] < curr_length:
+                three_longest[c][0] = curr_length
+
+            three_longest[c].sort()
+            longest_so_far = max(longest_so_far, three_longest[c][0])
+
+            prev = c
+            i += 1
+
+        return longest_so_far
