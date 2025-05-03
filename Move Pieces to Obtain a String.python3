@@ -1,0 +1,37 @@
+class Solution:
+    def canChange(self, start: str, target: str) -> bool:
+        
+        s_no_underscores = start.replace("_", "")
+        t_no_underscores = target.replace("_", "")
+        if s_no_underscores != t_no_underscores:
+            return False
+
+        s_ptr = t_ptr = 0
+        n = len(start)
+
+        while s_ptr < n and t_ptr < n:
+            
+            while s_ptr < n and start[s_ptr] == '_':
+                s_ptr += 1
+            while t_ptr < n and target[t_ptr] == '_':
+                t_ptr += 1
+
+            
+            if s_ptr == n and t_ptr == n:
+                return True
+            
+            if s_ptr == n or t_ptr == n:
+                return False
+
+            if start[s_ptr] != target[t_ptr]:
+                return False
+
+            if start[s_ptr] == 'L' and s_ptr < t_ptr:
+                return False
+            if start[s_ptr] == 'R' and s_ptr > t_ptr:
+                return False
+
+            s_ptr += 1
+            t_ptr += 1
+
+        return True
