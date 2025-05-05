@@ -1,0 +1,15 @@
+class Solution:
+    def findDuplicate(self, paths):
+        content_map = defaultdict(list)
+        
+        for path in paths:
+            parts = path.split(" ")
+            root = parts[0]
+            
+            for file in parts[1:]:
+                name, content = file.split("(")
+                content = content[:-1]  # Remove trailing ')'
+                full_path = f"{root}/{name}"
+                content_map[content].append(full_path)
+        
+        return [group for group in content_map.values() if len(group) > 1]
