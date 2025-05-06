@@ -1,0 +1,21 @@
+class Solution:
+    def shoppingOffers(self, price: List[int], special: List[List[int]], needs: List[int]) -> int:
+        n = len(price)
+
+        @lru_cache(None)
+        def dfs(current_needs):
+            
+            total = sum(current_needs[i] * price[i] for i in range(n))
+
+            for offer in special:
+                new_needs = []
+                for i in range(n):
+                    if offer[i] > current_needs[i]:
+                        break
+                    new_needs.append(current_needs[i] - offer[i])
+                else:
+                    total = min(total, offer[-1] + dfs(tuple(new_needs)))
+
+            return total
+
+        return dfs(tuple(needs))
