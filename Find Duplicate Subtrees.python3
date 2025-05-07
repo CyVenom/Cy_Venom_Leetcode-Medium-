@@ -1,0 +1,26 @@
+from collections import defaultdict
+from typing import Optional, List
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+        tree_map = defaultdict(int)
+        duplicates = []
+
+        def serialize(node):
+            if not node:
+                return '#'
+            serial = f"{node.val},{serialize(node.left)},{serialize(node.right)}"
+            tree_map[serial] += 1
+            if tree_map[serial] == 2:
+                duplicates.append(node)
+            return serial
+        
+        serialize(root)
+        return duplicates
