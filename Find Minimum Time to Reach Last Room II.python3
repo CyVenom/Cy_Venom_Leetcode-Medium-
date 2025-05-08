@@ -1,0 +1,24 @@
+class Solution:
+    def minTimeToReach(self, moveTime: List[List[int]]) -> int:
+        n, m = len(moveTime), len(moveTime[0])
+        dist = [[[float('inf')] * 2 for _ in range(m)] for _ in range(n)]
+        pq = [(0, 0, 0, 0)]
+        dist[0][0][0] = 0
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+        while pq:
+            time, i, j, moves = heapq.heappop(pq)
+            if time > dist[i][j][moves % 2]:
+                continue
+            if i == n - 1 and j == m - 1:
+                return time
+            for di, dj in directions:
+                ni, nj = i + di, j + dj
+                if 0 <= ni < n and 0 <= nj < m:
+                    next_moves = moves + 1
+                    move_cost = 1 if next_moves % 2 == 1 else 2
+                    next_time = max(time, moveTime[ni][nj]) + move_cost
+                    if next_time < dist[ni][nj][next_moves % 2]:
+                        dist[ni][nj][next_moves % 2] = next_time
+                        heapq.heappush(pq, (next_time, ni, nj, next_moves))
+        return -1
