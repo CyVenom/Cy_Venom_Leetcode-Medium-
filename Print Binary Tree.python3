@@ -1,0 +1,20 @@
+class Solution:
+    def printTree(self, root: Optional[TreeNode]) -> List[List[str]]:
+        def getHeight(node):
+            if not node:
+                return -1
+            return 1 + max(getHeight(node.left), getHeight(node.right))
+
+        def fill(node, r, c, height):
+            if not node:
+                return
+            res[r][c] = str(node.val)
+            gap = 2 ** (height - r - 1)
+            fill(node.left, r + 1, c - gap, height)
+            fill(node.right, r + 1, c + gap, height)
+
+        height = getHeight(root)
+        m, n = height + 1, 2 ** (height + 1) - 1
+        res = [[""] * n for _ in range(m)]
+        fill(root, 0, (n - 1) // 2, height)
+        return res
