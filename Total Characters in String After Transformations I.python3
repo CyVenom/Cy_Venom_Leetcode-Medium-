@@ -1,0 +1,26 @@
+class Solution:
+    def lengthAfterTransformations(self, s: str, t: int) -> int:
+        # sl = list(s)
+        MOD = 10**9 + 7
+        res = len(s)
+        alphas = [0]*26
+        for i in s:
+            alphas[ord(i)-ord('a')] += 1
+        
+        curCount = alphas[0]
+        for trans in range(t):
+            new_alphas = [0]
+            for i in range(25):
+                curCount = alphas[i]
+                if curCount == 0:
+                    new_alphas.append(0)
+                    continue
+                
+                new_alphas.append(curCount)
+            curCount = alphas[-1]
+            if curCount:
+                new_alphas[1] += curCount
+                new_alphas[0] = curCount
+            alphas = new_alphas
+        
+        return sum(alphas)%MOD
