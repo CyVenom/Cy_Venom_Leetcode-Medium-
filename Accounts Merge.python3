@@ -1,0 +1,38 @@
+from collections import defaultdict
+
+class Solution:
+    def accountsMerge(self, accounts: list[list[str]]) -> list[list[str]]:
+        parent = {}
+        email_to_name = {}
+
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        def union(x, y):
+            rootX = find(x)
+            rootY = find(y)
+            if rootX != rootY:
+                parent[rootY] = rootX
+
+        for account in accounts:
+            name = account[0]
+            first_email = account[1]
+            for email in account[1:]:
+                if email not in parent:
+                    parent[email] = email
+                email_to_name[email] = name
+                union(first_email, email)
+
+        merged = defaultdict(list)
+        for email in parent:
+            root = find(email)
+            merged[root].append(email)
+
+        result = []
+        for root, emails in merged.items():
+            result.append([email_to_name[root]] + sorted(emails))
+
+        result.sort(key=lambda x: (x[0], x[1:]))
+        return result
