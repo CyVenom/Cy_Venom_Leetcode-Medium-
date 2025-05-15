@@ -1,0 +1,36 @@
+from sortedcontainers import SortedDict
+
+class MyCalendarTwo:
+
+    def __init__(self):
+        self.timeline = SortedDict()
+
+    def book(self, startTime: int, endTime: int) -> bool:
+        # Mark start and end of the event
+        self.timeline[startTime] = self.timeline.get(startTime, 0) + 1
+        self.timeline[endTime] = self.timeline.get(endTime, 0) - 1
+        
+        active_events = 0
+        
+        for count in self.timeline.values():
+            active_events += count
+            if active_events >= 3:
+                # Revert changes if triple booking detected
+                self.timeline[startTime] -= 1
+                self.timeline[endTime] += 1
+                if self.timeline[startTime] == 0:
+                    del self.timeline[startTime]
+                if self.timeline[endTime] == 0:
+                    del self.timeline[endTime]
+                return False
+                
+        return True
+
+
+myCalendarTwo = MyCalendarTwo()
+print(myCalendarTwo.book(10, 20))  
+print(myCalendarTwo.book(50, 60))  
+print(myCalendarTwo.book(10, 40))  
+print(myCalendarTwo.book(5, 15))  
+print(myCalendarTwo.book(5, 10))   
+print(myCalendarTwo.book(25, 55)) 
