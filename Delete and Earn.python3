@@ -1,0 +1,19 @@
+from collections import Counter
+
+class Solution:
+    def deleteAndEarn(self, nums: list[int]) -> int:
+        count = Counter(nums)
+        unique_nums = sorted(count.keys())
+        
+        prev = None
+        avoid = using = 0
+        
+        for num in unique_nums:
+            current_value = num * count[num]
+            if prev is not None and num == prev + 1:
+                avoid, using = max(avoid, using), avoid + current_value
+            else:
+                avoid, using = max(avoid, using), max(avoid, using) + current_value
+            prev = num
+        
+        return max(avoid, using)
