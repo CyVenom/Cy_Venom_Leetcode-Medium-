@@ -1,0 +1,24 @@
+from collections import defaultdict
+
+class Solution:
+    def pyramidTransition(self, bottom: str, allowed: list) -> bool:
+        def can_build(base, next_row):
+            if len(base) == 1:
+                return True
+            if len(next_row) + 1 == len(base):
+                return can_build(next_row, "")
+            
+            key = base[len(next_row):len(next_row)+2]
+            if key not in transitions:
+                return False
+            
+            for ch in transitions[key]:
+                if can_build(base, next_row + ch):
+                    return True
+            return False
+        
+        transitions = defaultdict(list)
+        for triplet in allowed:
+            transitions[triplet[:2]].append(triplet[2])
+        
+        return can_build(bottom, "")
