@@ -1,0 +1,30 @@
+class Solution:
+    def orderOfLargestPlusSign(self, n: int, mines: list) -> int:
+        grid = [[n] * n for _ in range(n)]
+        banned = {tuple(mine) for mine in mines}
+
+        for i in range(n):
+            left = right = up = down = 0
+            
+            for j in range(n):
+                # Left to right
+                left = 0 if (i, j) in banned else left + 1
+                grid[i][j] = min(grid[i][j], left)
+                
+                # Right to left
+                right = 0 if (i, n - j - 1) in banned else right + 1
+                grid[i][n - j - 1] = min(grid[i][n - j - 1], right)
+                
+                # Top to bottom
+                up = 0 if (j, i) in banned else up + 1
+                grid[j][i] = min(grid[j][i], up)
+                
+                # Bottom to top
+                down = 0 if (n - j - 1, i) in banned else down + 1
+                grid[n - j - 1][i] = min(grid[n - j - 1][i], down)
+
+        max_order = 0
+        for row in grid:
+            max_order = max(max_order, max(row))
+
+        return max_order
