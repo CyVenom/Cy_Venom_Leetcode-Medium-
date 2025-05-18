@@ -1,0 +1,11 @@
+class Solution:
+    def isIdealPermutation(self, nums: List[int]) -> bool:
+        n = len(nums)
+        max_val = -1
+
+        for i in range(n - 2):
+            max_val = max(max_val, nums[i])
+            if max_val > nums[i + 2]:
+                return False
+
+        return True
