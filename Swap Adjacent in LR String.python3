@@ -1,0 +1,20 @@
+class Solution:
+    def canTransform(self, start: str, result: str) -> bool:
+        if start.replace("X", "") != result.replace("X", ""):
+            return False
+        
+        pos_L_start = [i for i, c in enumerate(start) if c == 'L']
+        pos_L_result = [i for i, c in enumerate(result) if c == 'L']
+
+        pos_R_start = [i for i, c in enumerate(start) if c == 'R']
+        pos_R_result = [i for i, c in enumerate(result) if c == 'R']
+
+        for i, j in zip(pos_L_start, pos_L_result):
+            if i < j:
+                return False
+
+        for i, j in zip(pos_R_start, pos_R_result):
+            if i > j:
+                return False
+
+        return True
